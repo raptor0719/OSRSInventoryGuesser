@@ -1,0 +1,140 @@
+<html>
+	<head>
+		<title>Change Log - OSRS Inventory Guesser</title>
+		<style>
+			html {
+				background-color: black;
+				color: white;
+				font-family: sans-serif;
+			}
+			
+			li > ul > li {
+				max-width: 40em;
+				margin-bottom: 0.5em;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<h1>Beta -&gt; v1</h1>
+			<div>
+				<ul>
+					<li>
+						<h2>Reworked Metadata Layout</h2>
+						<ul>
+							<li>
+								Performed a massive rework of the backing metadata. Previously the metadata was constructed
+								directly from the icons and icon file names from the wiki using a thrown-together system of
+								heuristics. Metadata is now constructed from the item data directly from the OSRS wiki via the MediaWiki api.
+							</li>
+							<li>
+								This makes not only updating the item metadata for the guesser much easier, but also enables potential
+								features going forward, one such being released with this release! (see: Alternatives)
+							</li>
+							<li>
+								Additionally this also makes the item-filtering much easier. There should be much less instances of
+								unobtainable, unused, beta, and interface items in the item set. (Hopefully none, but I doubt it!)
+							</li>
+							<li>
+								Finally, this has some impact on how items are randomized for each new game, though the effects
+								will likely not be noticeable to the average user.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Have Guesses Reflect the In-Game Inventory Item Name</h2>
+						<ul>
+							<li>As a side effect of the metadata rework, the name to guess is now the exact text you get when hovering the item in the in-game inventory.</li>
+							<li>Previously some variants of items would have appended text usually in (), which is nice for differentiation, but technically inaccurate.</li>
+							<li>Note that this does not apply to item names with legitimate (), such as Dragon Scimitar (or) or Opal Bolts (e).</li>
+							<li>
+								Some items share the same in-game name such as an Adamant Kiteshield and the decorative Adamant Kiteshield (guthix variant).
+								There currently is no way to differentiate these textually other than their icon.
+							</li>
+						</ul>
+					<li>
+						<h2>Added Items Added in Recent Updates</h2>
+						<ul>
+							<li>This is more a less a side effect of the metadata rework.</li>
+							<li>Included now should be all items in the game as of 2026-03-24.</li>
+							<li>To name a few this now includes: Yama, Varlamore Part 2, Doom, Sailing, Cow Boss, and so much more I don't care to name!</li>
+							<li>The number of items went from 9397 to 9526! Though the metadata rework skews these figures significantly.</li>
+						</ul>
+					<li>
+						<h2>Added Alternatives</h2>
+						<ul>
+							<li>
+								This is a system that allows guesses to match any item name that matches a particular icon.
+							</li>
+							<li>
+								For example,
+								Dragon Dagger (p) and Dragon Dagger (p+) are 2 distinct items though they share the same icon.
+								With alternatives enabled, guessing either will result in a match.
+							</li>
+							<li>
+								This helps some particular item sets
+								that all look the same (looking at you bagged plants!).
+							</li>
+							<li>
+								Additionally, an item's alternatives can be viewed once the item has been guessed (or you give up), using
+								a small '?' button on the answer key. Each of these is also a wiki link! Yay!
+							</li>
+							<li>
+								This system isn't perfect as
+								there are some items that will list some alternatives that are just the same thing, and solving that issue
+								wasn't worth not releasing the feature.
+							</li>
+							<li>
+								Note that this is an option that can be toggled in the game settings. With it off, the system should
+								behave as it did previously.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Added Game Code</h2>
+						<ul>
+							<li>Games can now be effectively shared or saved with game codes!</li>
+							<li>Each 'New Game' will generate a game code below the game board.</li>
+							<li>This code can be copied and pasted into the Game Code field before starting a new Game.</li>
+							<li>There is additionally a toggle to use either the game settings from the code, or your own custom settings.</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Added Developer Games</h2>
+						<ul>
+							<li>Added some predefined games (both settings and item sets), each with its own theme.</li>
+							<li>The list of games and an associated start button has been added next to the game settings.</li>
+							<li>Hopefully more will be added in the future.</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Highlight Icon and Answer Key when Hovered</h2>
+						<ul>
+							<li>Items will now highlight in yellow when hovered with the mouse.</li>
+							<li>If that item has been answered, its associated entry in the answer key will highlight in yellow as well.</li>
+							<li>This helps finding item/answer pairs quickly!</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Other Changes</h2>
+						<ul>
+							<li>
+								Slightly Adjusted Guess Matching
+								<ul>
+									<li>Adjusted guess matching with results that not even I can comprehend.</li>
+									<li>(Long term I think the way guesses are matched should be reworked, but TBD.)</li>
+								</ul>
+							</li>
+							<li>
+								Changed Font to Sans-Serif
+								<ul>
+									<li>Serif fonts are a bit hard to read for me, so the font has been changed to sans-serif.</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
