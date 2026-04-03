@@ -1,0 +1,8 @@
+#Ignore third party libraries
+third-party/
+
+#Ignore the working folder
+working/
+
+#Ignore the wiki-sourced icons
+icons/
