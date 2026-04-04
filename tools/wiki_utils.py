@@ -11,14 +11,10 @@ def get_wiki_items():
 	item_pages = site.categories['Items']
 	
 	wiki_items = []
-	TEST_LIMITER = 0
 	for item_page in item_pages:
 		wiki_item = _create_wiki_item(item_page)
 		wiki_items.append(wiki_item)
-		if TEST_LIMITER > 100:
-			break
 		time.sleep(0.2)
-		TEST_LIMITER += 1
 	
 	return wiki_items
 
