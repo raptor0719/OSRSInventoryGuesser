@@ -1,0 +1,186 @@
+body {
+	background-color: black;
+	color: white;
+	margin: 0.5em;
+	margin-left: 2em;
+	font-family: sans-serif;
+}
+
+#change-log-link {
+	float: right;
+}
+
+#new-game-container {
+	display: inline-block;
+	border: 2px solid black;
+	margin-bottom: 1.5em;
+	padding: 0.5em;
+}
+
+#new-game-container > * {
+}
+
+#new-game-container > label {
+	float: left;
+	clear: left;
+}
+
+#new-game-container > input {
+	float: left;
+}
+
+#new-game-container > label::after {
+	content: ":";
+}
+
+#new-game-container > button {
+	clear: left;
+	display: block;
+}
+
+#match-factor-val {
+	display: inline-block;
+	width: 2em;
+	text-align: right;
+}
+
+#developer-matches-container {
+	display: inline-block;
+	vertical-align: top;
+}
+
+#developer-matches-container > label {
+	display: block;
+}
+
+#developer-matches-container > select {
+	display: block;
+	width: 100%;
+}
+
+img.correct {
+	border: 3px solid rgba(0,100,0,1);
+}
+
+img.not-guessed {
+	border: 3px solid rgba(100,0,0,1);
+}
+
+img.hovered {
+	border: 3px solid yellow !important;
+}
+
+#game-container {
+	display: flex;
+}
+
+#display-container {
+	padding-top: 70px;
+	padding-left: 63px;
+	background-image: url("osrs_inv_transparency.png");
+	width: 360px;
+	height: 517px;
+}
+
+img {
+	border: 3px solid rgba(0,100,0,0);
+	margin-right: 20px;
+	margin-bottom: 8px;
+}
+
+#answer-key {
+	margin-top: 1.2em;
+	margin-left: 1em;
+}
+
+#answer-key > span {
+	display: block;
+	visibility: hidden;
+}
+
+#answer-key > span > a {
+	font-size: 0.8em;
+}
+
+#answer-key > span.not-guessed,
+#answer-key > span.guessed {
+	visibility: visible;
+}
+
+#answer-key > span.not-guessed > a:link,
+#answer-key > span.not-guessed > a:visited {
+	color: red;
+}
+
+#answer-key > span.guessed > a:link,
+#answer-key > span.guessed > a:visited {
+	color: green;
+}
+
+#answer-key > span.hovered > a:link,
+#answer-key > span.hovered > a:visited {
+	color: yellow;
+}
+
+#answer-key > span > a {
+	text-decoration: none;
+}
+
+#answer-key > span:nth-child(4),
+#answer-key > span:nth-child(8),
+#answer-key > span:nth-child(12),
+#answer-key > span:nth-child(16),
+#answer-key > span:nth-child(20),
+#answer-key > span:nth-child(24) {
+	margin-bottom: 1em;
+}
+
+#answer-key > span > button {
+	font-size: 0.5em;
+	margin-left: 0.4em;
+}
+
+#answer-key > span > button {
+	background-color: grey;
+}
+
+#answer-key > span > button.showing {
+	background-color: white;
+}
+
+#alternatives-container {
+	margin-left: 1em;
+	overflow: scroll;
+	max-height: 35em;
+	padding-right: 0.5em;
+}
+
+#alternatives-container > h1 {
+	color: white;
+	font-size: 1em;
+	font-weight: normal;
+	margin-bottom: 0.25em;
+}
+
+#alternatives-container > a {
+	display: block;
+	font-size: 0.9em;
+	margin-left: 1em;
+}
+
+#alternatives-container > a:link,
+#alternatives-container > a:visited {
+	color: lightgrey;
+	text-decoration: none;
+}
+
+#match-code-container {
+	font-size: 0.5em;
+	color: grey;
+}
+
+#match-code-container > h1 {
+	font-size: 1em;
+	display: inline-block;
+}
+
