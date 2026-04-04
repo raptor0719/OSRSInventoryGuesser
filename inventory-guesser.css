@@ -153,6 +153,7 @@ img {
 	overflow: auto;
 	max-height: 35em;
 	padding-right: 0.5em;
+	scrollbar-color: darkgrey black;
 }
 
 #alternatives-container > h1 {
