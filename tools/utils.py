@@ -8,6 +8,13 @@ class XMLWriter:
 	def output_tag_with_text(self, name, text):
 		prefix = "\t" * self.depth
 		self.output_file.write(prefix + "<" + name + ">" + text + "</" + name + ">\n")
+	
+	def output_tag_with_text_and_attributes(self, name, text, attributes):
+		prefix = "\t" * self.depth
+		attrs = ""
+		for attr_name,attr_value in attributes.items():
+			attrs = attrs + attr_name + "=\"" + attr_value + "\" "
+		self.output_file.write(prefix + "<" + name + " " + attrs + ">" + text + "</" + name + ">\n")
 
 	def output_start_tag(self, name):
 		prefix = "\t" * self.depth
@@ -18,6 +25,9 @@ class XMLWriter:
 		prefix = "\t" * self.depth
 		self.output_file.write(prefix + "</" + name + ">\n")
 		self.depth -= 1
+	
+	def output_raw(self, text):
+		self.output_file.write(text)
 	
 	def close(self):
 		self.output_file.close()
