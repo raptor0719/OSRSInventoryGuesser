@@ -47,20 +47,26 @@
 				alternativesContainer.append($("<h1></h1>").attr("inventory-index", index).text("Alternatives for " + originalName));
 
 				alternativeNamesList.forEach(function(name) {
+					let canonicalItemName = name["item_name"];
+					let inventoryName = name["variant_name"];
+					let addedInformation = (canonicalItemName.startsWith(inventoryName)) ? canonicalItemName.replace(inventoryName, "").trim() : "";
 					alternativesContainer.append($("<a></a>")
-								.attr("href", Util.createOSRSWikiItemURL(name["item_name"]))
+								.attr("href", Util.createOSRSWikiItemURL(canonicalItemName))
 								.attr("target", "_blank")
-								.text(name["variant_name"]));
+								.text(inventoryName)
+								.append($("<span></span>").addClass("added-info").text(addedInformation)));
 				});
 			}
 
 			let createAnswerKeyEntry = function(itemName, item, index) {
 				let name = getItemNames(item)[0];
+				let addedInformation = (itemName.startsWith(name)) ? itemName.replace(name, "").trim() : "";
 				let answerKeyEntry = $("<span></span>")
 							.append($("<a></a>")
 								.attr("href", Util.createOSRSWikiItemURL(itemName))
 								.attr("target", "_blank")
-								.text(name))
+								.text(name)
+								.append($("<span></span>").addClass("added-info").text(addedInformation)))
 							.hover(markHovered.bind(null, displayContainer, answerKey, true, index),
 								markHovered.bind(null, displayContainer, answerKey, false, index));
 				let iconFileName = getItemIconFileName(item);

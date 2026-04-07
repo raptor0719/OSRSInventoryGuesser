@@ -148,6 +148,11 @@ img {
 	background-color: white;
 }
 
+.added-info {
+	color: #6a6a6a;
+	margin-left: 0.25em;
+}
+
 #alternatives-container {
 	margin-left: 1em;
 	overflow: auto;
