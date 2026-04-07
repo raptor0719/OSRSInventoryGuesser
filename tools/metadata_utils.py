@@ -17,7 +17,7 @@ def read_items_metadata(file_path):
 	for item_node in root.findall('item'):
 		name = utils.unescape_xml(item_node.findtext('name'))
 		text = item_node.findtext('text')
-		items.append(create_item(name, text, [category.text for category in item_node.findall('categories/category')]))
+		items.append(create_item(name, text, [utils.unescape_xml(category.text) for category in item_node.findall('categories/category')]))
 
 	return items
 
@@ -32,7 +32,7 @@ def write_items_metadata(items, output_file_name):
 		xml_writer.output_tag_with_text("text", utils.cdata(item["text"]))
 		xml_writer.output_start_tag("categories")
 		for category in item["categories"]:
-			xml_writer.output_tag_with_text("category", category)
+			xml_writer.output_tag_with_text("category", utils.escape_xml(category))
 		xml_writer.output_end_tag("categories")
 
 		xml_writer.output_end_tag("item")
