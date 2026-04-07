@@ -1,4 +1,4 @@
-FILTERED_CATEGORIES = ["Discontinued content", "Unobtainable items", "Interface items"]
+FILTERED_CATEGORIES = ["Discontinued content", "Unobtainable items", "Interface items", "Deadman seasonal items", "Sailing beta content"]
 FILTERED_NAME_SUBSTRINGS = ["(interface item)", "(discontinued)", "(Last Man Standing)", "(beta)", "(deadman)", "(Player-owned house)", "(Deadman starter pack)", "(RuneScape 2 Beta)", "(Deadman Mode)", "animation item", "Halloween event)", "(Mage Training Arena)", "(unobtainable item)", "Dni23"]
 FILTERED_WHOLE_NAMES = ["Hat", "Collection log/Table", "Consumables", "Zamorkian items", "Hunter's mix", "Regular cape", "Monkey Madness helper", "Viking toy ship", "Anim offhand", "Oak raft base", "Left-handed banana", "Paintbrush", "A jester stick", "Apricot cream pie", "Bow and arrow", "Community pumpkin"]
 FILTERED_TEXT_SUBSTRINGS = ["[[animation item]]", "{{Animation items}}"]
