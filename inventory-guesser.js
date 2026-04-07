@@ -186,7 +186,7 @@ var InventoryGuesser = function(getItemNames, getItemIconFileName, swapForAltern
 		alternatives = allowAlternatives;
 		multiMatch = allowMultiMatch;
 
-		return copyArray(inventory);
+		return chosenItemVariants;
 	}
 }
 

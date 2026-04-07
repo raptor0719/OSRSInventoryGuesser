@@ -48,17 +48,17 @@
 
 				alternativeNamesList.forEach(function(name) {
 					alternativesContainer.append($("<a></a>")
-								.attr("href", Util.createOSRSWikiSearchURL(name))
+								.attr("href", Util.createOSRSWikiItemURL(name["item_name"]))
 								.attr("target", "_blank")
-								.text(name));
+								.text(name["variant_name"]));
 				});
 			}
 
-			let createAnswerKeyEntry = function(item, index) {
+			let createAnswerKeyEntry = function(itemName, item, index) {
 				let name = getItemNames(item)[0];
 				let answerKeyEntry = $("<span></span>")
 							.append($("<a></a>")
-								.attr("href", Util.createOSRSWikiSearchURL(name))
+								.attr("href", Util.createOSRSWikiItemURL(itemName))
 								.attr("target", "_blank")
 								.text(name))
 							.hover(markHovered.bind(null, displayContainer, answerKey, true, index),
@@ -73,7 +73,8 @@
 				return answerKeyEntry;
 			}
 			let swapForAlternative = function(answerKey, indexMatched, itemVariant) {
-				let alternativeAnswerKeyEntry = createAnswerKeyEntry(itemVariant, indexMatched)
+				let itemName = itemVariant[NAME_PROP];
+				let alternativeAnswerKeyEntry = createAnswerKeyEntry(itemName, itemVariant, indexMatched)
 				answerKey.children()[indexMatched].replaceWith(alternativeAnswerKeyEntry[0])
 			}
 			
@@ -147,7 +148,6 @@
 				let stringMatcher = new StringFuzzyMatcher(matchFactor);
 
 				let items = inventoryGuesser.newGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, stringMatcher, predefinedItems);
-				console.log(items.map((x) => x.names));
 
 				displayContainer.empty();
 				answerKey.empty();
@@ -156,15 +156,17 @@
 				let scaleFactor = 1.8;
 				let maxIconPixelSize = 50;
 				items.forEach(function(e, i, arr) {
+					let itemVariant = ItemsMetadata[e.item_id][VARIANTS_PROP][e.variant_id];
+					console.log(itemVariant);
 					$("<img></img>")
-						.prop("src", getItemIconFileName(e))
+						.prop("src", getItemIconFileName(itemVariant))
 						.appendTo(displayContainer)
 						.one("load", function() {
 							Util.resizeImgElement($(this), scaleFactor, maxIconPixelSize);
 						})
 						.hover(markHovered.bind(null, displayContainer, answerKey, true, i),
 								markHovered.bind(null, displayContainer, answerKey, false, i));
-					createAnswerKeyEntry(e, i).appendTo(answerKey);
+					createAnswerKeyEntry(ItemsMetadata[e.item_id][NAME_PROP], itemVariant, i).appendTo(answerKey);
 				});
 				matchCodeField.text(inventoryGuesser.getMatchCode());
 			}

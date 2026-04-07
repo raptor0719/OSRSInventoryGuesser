@@ -42,6 +42,12 @@ Util.createOSRSWikiSearchURL = function(searchTerm) {
 	return "https://oldschool.runescape.wiki/?search=" + encodeURIComponent(searchTerm);
 }
 
+Util.createOSRSWikiItemURL = function(itemName) {
+	url_part = itemName.replaceAll(" ", "_");
+	
+	return "https://oldschool.runescape.wiki/w/" + url_part
+}
+
 Util.initializeSearchField = function(textField, submitButton, showAllButton, container, getElementVal) {
 	submitButton.on("click", function(event) {
 		let searchTerm = textField.val().toLowerCase();
@@ -205,10 +211,11 @@ Util.findAllAlternativeNames = function(iconFileName) {
 
 	alternativesMetadata.forEach(function(alt) {
 		let altItemIndex = alt["item_index"];
+		let itemName = ItemsMetadata[altItemIndex][NAME_PROP];
 		alt["variant_indices"].forEach(function(variantIndex) {
 			let itemVariant = ItemsMetadata[altItemIndex]["variants"][variantIndex];
 			itemVariant[VARIANT_NAMES_PROP].forEach(function(name) {
-				alternatives.push(name);
+				alternatives.push({"item_name": itemName, "variant_name": name});
 			});
 		});
 	});
