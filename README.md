@@ -6,7 +6,7 @@ icon uniqueness to make an icon identification game, where the user is asked to 
 This project is not only the html/css/js that constitutes the application but also the various tools used to lookup item data, download icons, and then generate the subsequent metadata that
 the application uses.
 
-The latest version of the guesser is hosted publically here: [http://www.modernmagicks.com/osrsInventoryGuesser/](http://www.modernmagicks.com/osrsInventoryGuesser/inventory-guesser.html)
+The latest version of the guesser is hosted publically here: http://www.modernmagicks.com/osrsInventoryGuesser/inventory-guesser.html
 
 It can also be ran locally and completely offline. See below for instructions.
 
