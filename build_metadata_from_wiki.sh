@@ -7,7 +7,7 @@ WORKING_DIR="working"
 ITEMS_FILE="$WORKING_DIR/items.xml"
 SAME_ICON_REPORT="$WORKING_DIR/same_icon.report"
 SAME_ICON_VISUAL_REPORT="$WORKING_DIR/same_icon.report.html"
-ICONS_DIR="./icons"
+ICONS_DIR="$WORKING_DIR/icons"
 
 ITEMS_JS_METADATA_FILE="$WORKING_DIR/items-metadata.js"
 ITEMS_ALTS_JS_METADATA_FILE="$WORKING_DIR/items-alternatives-metadata.js"
