@@ -45,10 +45,11 @@ Tooling dependencies
 - imagehash v4.3.2 for python
 
 ## Credits
+Credits
 - Developed entirely by raptor0719
 - OSRS for the icons and inventory visual
 
 Special Thanks
 - To the friends that gave me some good ideas along the way. You know who you are.
-- To the folks maintain the OSRS wiki https://oldschool.runescape.wiki for without them this project would be much more difficult.
+- To the folks maintaining the OSRS wiki https://oldschool.runescape.wiki for without them this project would be much more difficult.
 - To Jagex and the Old School Runescape team for maintaining such a wonderful game.
