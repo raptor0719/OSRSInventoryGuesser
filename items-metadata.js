@@ -5078,7 +5078,7 @@ var ItemsMetadata = [
 	createItemMetadata("Lovakite ore", [createItemVariantMetadata(["Lovakite ore"], "icons/Lovakite_ore.png")]),
 	createItemMetadata("Love crossbow", [createItemVariantMetadata(["Love crossbow"], "icons/Love_crossbow.png")]),
 	createItemMetadata("Love letter", [createItemVariantMetadata(["Love letter"], "icons/Love_letter.png")]),
-	createItemMetadata("Lovley jubbly bib", [createItemVariantMetadata(["Lovley{{sic}} jubbly bib"], "icons/Lovley_jubbly_bib.png")]),
+	createItemMetadata("Lovley jubbly bib", [createItemVariantMetadata(["Lovley jubbly bib"], "icons/Lovley_jubbly_bib.png")]),
 	createItemMetadata("Low alcohol keg", [createItemVariantMetadata(["Low alcohol keg"], "icons/Low_alcohol_keg.png")]),
 	createItemMetadata("Lucky cutlass", [createItemVariantMetadata(["Lucky cutlass"], "icons/Lucky_cutlass.png")]),
 	createItemMetadata("Lucky impling jar", [createItemVariantMetadata(["Lucky impling jar"], "icons/Lucky_impling_jar.png")]),
