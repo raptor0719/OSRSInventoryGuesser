@@ -33,9 +33,13 @@ body {
 	content: ":";
 }
 
-#new-game-container > button {
+#new-game-button {
 	clear: left;
-	display: block;
+	float: left;
+}
+
+#daily-game-button {
+	float: right;
 }
 
 #match-factor-val {

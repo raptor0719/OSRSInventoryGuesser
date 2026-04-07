@@ -229,6 +229,12 @@
 				
 				startNewGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, predefinedItems);
 			}).click();
+			
+			$("#daily-game-button").click(function() {
+				let prngSeed = new Date().toISOString().slice(0, 10);
+				
+				startNewGame(28, true, false, false, prngSeed, 0.8, []);
+			});
 		});
 		</script>
 	</head>
@@ -253,6 +259,7 @@
 				<label for="use-custom-settings">Use Custom Settings with Game Code</label>
 				<input id="use-custom-settings" name="use-custom-settings" type="checkbox"></input>
 				<button id="new-game-button" name="new-game-button" type="button">New Game</button>
+				<button id="daily-game-button" name="daily-game-button" type="button">Daily</button>
 			</div>
 			<div id="developer-matches-container">
 				<label for="developer-matches-select">Developer Games</label>
