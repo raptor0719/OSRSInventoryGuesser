@@ -158,7 +158,6 @@ Util.createItemVariantName = function(itemName, variantIconName) {
 Util.createDeveloperMatch = function(allowAlternatives, allowRepeats, allowMultiMatch, matchFactor, itemVariantNames) {
 	let itemVariants = [];
 	itemVariantNames.forEach(function(itemVariantName) {
-		console.log(itemVariantName);
 		itemVariants.push(Util.lookupItemVariantIndices(ItemsMetadata, itemVariantName["item_name"], itemVariantName["icon_name"]));
 	});
 	

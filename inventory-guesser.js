@@ -64,7 +64,7 @@ var InventoryGuesser = function(getItemNames, getItemIconFileName, swapForAltern
 								if (!anyMatched) {
 									if (stringMatcher.matches(aGuess, name)) {
 										anyMatched = true;
-										swapForAlternative(i, itemVariant);
+										swapForAlternative(i, metadata[altItemIndex][NAME_PROP], itemVariant);
 										inventory[i] = itemVariant;
 									}
 								}

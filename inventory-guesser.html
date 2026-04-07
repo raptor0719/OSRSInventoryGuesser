@@ -78,8 +78,7 @@
 				}
 				return answerKeyEntry;
 			}
-			let swapForAlternative = function(answerKey, indexMatched, itemVariant) {
-				let itemName = itemVariant[NAME_PROP];
+			let swapForAlternative = function(answerKey, indexMatched, itemName, itemVariant) {
 				let alternativeAnswerKeyEntry = createAnswerKeyEntry(itemName, itemVariant, indexMatched)
 				answerKey.children()[indexMatched].replaceWith(alternativeAnswerKeyEntry[0])
 			}
@@ -163,7 +162,6 @@
 				let maxIconPixelSize = 50;
 				items.forEach(function(e, i, arr) {
 					let itemVariant = ItemsMetadata[e.item_id][VARIANTS_PROP][e.variant_id];
-					console.log(itemVariant);
 					$("<img></img>")
 						.prop("src", getItemIconFileName(itemVariant))
 						.appendTo(displayContainer)
