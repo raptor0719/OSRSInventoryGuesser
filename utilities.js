@@ -44,11 +44,12 @@ Util.calculateNumberFromString = function(str) {
 	 return total;
 }
 
+Util.randomStringAllowedCharacters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 Util.generateRandomString = function(length) {
 	let g = "";
 	for (let i = 0; i < length; i++) {
-		let rand = Util.randomIntInRange(33, 116);
-		g += String.fromCodePoint(rand);
+		let rand = Util.randomIntInRange(0, Util.randomStringAllowedCharacters.length);
+		g += Util.randomStringAllowedCharacters.charAt(rand);
 	}
 	return g;
 }
