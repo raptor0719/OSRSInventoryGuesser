@@ -14,6 +14,45 @@ Util.randomIntInRange = function(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+Util.scaleNumberToRange = function(value, min, max) {
+	return Math.floor(value * (max - min + 1)) + min;
+}
+
+Util.randomNumberGenerator = function(seed) {
+	// Implemenation of Mulberry32
+	let prng = function() {
+		let t = seed += 0x6D2B79F5;
+		t = Math.imul(t ^ t >>> 15, t | 1);
+		t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+		return ((t ^ t >>> 14) >>> 0) / 4294967296;
+	}
+	
+	// Go past the first 20 iterations because
+	// predictable sequences occur at lower iterations for some seeds
+	for (let goPast = 0; goPast < 20; goPast++) {
+		prng();
+	}
+	
+	return prng;
+}
+
+Util.calculateNumberFromString = function(str) {
+	 let total = 0;
+	 for (let i = 0; i < str.length; i++) {
+	 	total += str.codePointAt(i);
+	 }
+	 return total;
+}
+
+Util.generateRandomString = function(length) {
+	let g = "";
+	for (let i = 0; i < length; i++) {
+		let rand = Util.randomIntInRange(33, 116);
+		g += String.fromCodePoint(rand);
+	}
+	return g;
+}
+
 Util.resizeImgElement = function(jqImg, scaleFactor, maxPixelSize) {
 	let element = jqImg;
 	let width = element.width();

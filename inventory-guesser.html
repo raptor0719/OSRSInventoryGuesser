@@ -14,6 +14,7 @@
 			let displayContainer = $("#display-container");
 			let answerKey = $("#answer-key");
 			let alternativesContainer = $("#alternatives-container");
+			let prngSeedDisplay = $("#prng-seed-display > span");
 			let matchCodeField = $("#match-code-container > span");
 			
 			let scoreRatioDisplay = $("#score-ratio-display");
@@ -141,6 +142,7 @@
 			let allowAlternativesInput = $("#allow-alternatives");
 			let allowDuplicatesInput = $("#allow-duplicates");
 			let allowMultiMatchInput = $("#allow-multi-match");
+			let prngSeedInput = $("#prng-seed-field");
 			let matchCodeInput = $("#match-code-field");
 			let useCustomSettings = $("#use-custom-settings");
 
@@ -148,7 +150,7 @@
 				$("#match-factor-val").text($(this).val());
 			}).trigger("input");
 			
-			let startNewGame = function(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, matchFactor, predefinedItems) {
+			let startNewGame = function(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, predefinedItems) {
 				console.log("Starting new game with properties:\nmatchFactor = " + matchFactor + "\nnumber of items = " + numberOfItems + "\nallow alternatives = " + allowAlternatives + "\nallow duplicates = " + allowDuplicates + "\nallow multi-match = " + allowMultiMatch + "\npredefined items = " + predefinedItems.length);
 				
 				// Set settings to reflect the current match
@@ -156,12 +158,16 @@
 				allowAlternativesInput.prop("checked", allowAlternatives);
 				allowDuplicatesInput.prop("checked", allowDuplicates);
 				allowMultiMatchInput.prop("checked", allowMultiMatch);
+				prngSeedInput.val("");
 				matchFactorInput.val(matchFactor*100).trigger("input");
 				matchCodeInput.val("");
 				
+				// If no seed was provided, then we probably have some predefined items, but generate something anyway
+				let prngSeedValue = (prngSeed.length > 0) ? Util.calculateNumberFromString(prngSeed) : (Math.random()*2**32)>>>0;
+				let prng = Util.randomNumberGenerator(prngSeedValue);
 				let stringMatcher = new StringFuzzyMatcher(matchFactor);
 
-				let items = inventoryGuesser.newGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, stringMatcher, predefinedItems);
+				let items = inventoryGuesser.newGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prng, stringMatcher, predefinedItems);
 
 				displayContainer.empty();
 				answerKey.empty();
@@ -181,6 +187,8 @@
 								markHovered.bind(null, displayContainer, answerKey, false, i));
 					createAnswerKeyEntry(ItemsMetadata[e.item_id][NAME_PROP], itemVariant, i).appendTo(answerKey);
 				});
+				
+				prngSeedDisplay.text(prngSeed);
 				matchCodeField.text(inventoryGuesser.getMatchCode());
 				scoreRatioDisplay.text("0/" + inventoryGuesser.getItemsCount());
 				scorePercentageDisplay.text("0.00%");
@@ -197,24 +205,29 @@
 					let allowAlternatives = matchData["allow_alternative"];
 					let allowDuplicates = matchData["allow_repeats"];
 					let allowMultiMatch = matchData["allow_multimatch"];
+					let prngSeed = matchName;
 					let predefinedItems = matchData["item_variants"];
 					
-					startNewGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, matchFactor, predefinedItems);
+					startNewGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, predefinedItems);
 				}
 			});
 
 			$("#new-game-button").click(function() {
 				let matchCodeData = (matchCodeInput.val().trim() !== "") ? Util.parseMatchCode(matchCodeInput.val().trim()) : null;
 				let fromMatchCode = !useCustomSettings.prop("checked") && matchCodeData !== null;
+				
+				let prngSeedInputValue = prngSeedInput.val().trim();
+				let prngSeedString = (prngSeedInputValue.length > 0) ? prngSeedInputValue : Util.generateRandomString(20);
 
 				let matchFactor = (fromMatchCode) ? matchCodeData["match_factor"] : matchFactorInput.val()/100;
 				let numberOfItems = (matchCodeData !== null) ? matchCodeData["item_variants"].length : numberOfItemsInput.val();
 				let allowAlternatives = (fromMatchCode) ? matchCodeData["allow_alternative"] : allowAlternativesInput.prop("checked");
 				let allowDuplicates = (fromMatchCode) ? matchCodeData["allow_repeats"] : allowDuplicatesInput.prop("checked");
 				let allowMultiMatch = (fromMatchCode) ? matchCodeData["allow_multimatch"] : allowMultiMatchInput.prop("checked");
+				let prngSeed = (fromMatchCode) ? "" : prngSeedString;
 				let predefinedItems = (matchCodeData !== null) ? matchCodeData["item_variants"] : [];
 				
-				startNewGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, matchFactor, predefinedItems);
+				startNewGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, predefinedItems);
 			}).click();
 		});
 		</script>
@@ -233,6 +246,8 @@
 				<input id="allow-duplicates" name="allow-duplicates" type="checkbox"></input>
 				<label for="allow-multi-match">Allow Multi-Match</label>
 				<input id="allow-multi-match" name="allow-multi-match" type="checkbox"></input>
+				<label for="prng-seed-field">Seed</label>
+				<input id="prng-seed-field" name="prng-seed-field" type="text"></input>
 				<label for="match-code-field">Game Code</label>
 				<input id="match-code-field" name="match-code-field" type="text"></input>
 				<label for="use-custom-settings">Use Custom Settings with Game Code</label>
@@ -257,7 +272,11 @@
 				<div id="answer-key"></div>
 				<div id="alternatives-container"></div>
 			</div>
-			<div id="match-code-container">
+			<div id="prng-seed-display" class="code-display-container">
+				<h1>Seed:</h1>
+				<span></span>
+			</div>
+			<div id="match-code-container" class="code-display-container">
 				<h1>Game Code:</h1>
 				<span></span>
 			</div>

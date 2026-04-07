@@ -184,12 +184,12 @@ img {
 	text-decoration: none;
 }
 
-#match-code-container {
+.code-display-container {
 	font-size: 0.5em;
 	color: grey;
 }
 
-#match-code-container > h1 {
+.code-display-container > h1 {
 	font-size: 1em;
 	display: inline-block;
 }

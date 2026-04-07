@@ -141,7 +141,7 @@ var InventoryGuesser = function(getItemNames, getItemIconFileName, swapForAltern
 		return matchCode;
 	}
 
-	this.newGame = function(numberOfItemsRaw, allowAlternatives, allowRepeats, allowMultiMatch, newStringMatcher, predefinedItems) {
+	this.newGame = function(numberOfItemsRaw, allowAlternatives, allowRepeats, allowMultiMatch, prng, newStringMatcher, predefinedItems) {
 		let numberOfItems = Math.min(numberOfItemsRaw, 28);
 
 		let usedIndexes = [];
@@ -150,11 +150,11 @@ var InventoryGuesser = function(getItemNames, getItemIconFileName, swapForAltern
 		let chosenItemVariants = [];
 
 		let chooseRandomIndex = function() {
-			let chosen = Util.randomIntInRange(0, metadata.length - 1);
+			let chosen = Util.scaleNumberToRange(prng(), 0, metadata.length - 1);
 
 			if (!allowRepeats) {
 				while (usedIndexes.includes(chosen)) {
-					chosen = Util.randomIntInRange(0, metadata.length - 1);
+					chosen = Util.scaleNumberToRange(prng(), 0, metadata.length - 1);
 				}
 			}
 
@@ -177,7 +177,7 @@ var InventoryGuesser = function(getItemNames, getItemIconFileName, swapForAltern
 			for (let i = 0; i < numberOfItems; i++) {
 				let chosen = chooseRandomIndex();
 				let item = metadata[chosen];
-				let chosenVariant = (item[VARIANTS_PROP].length > 1) ? Util.randomIntInRange(0, item[VARIANTS_PROP].length - 1) : 0;
+				let chosenVariant = (item[VARIANTS_PROP].length > 1) ? Util.scaleNumberToRange(prng(), 0, item[VARIANTS_PROP].length - 1) : 0;
 				let variant = item[VARIANTS_PROP][chosenVariant];
 
 				tempInventory.push(variant);
