@@ -15,6 +15,9 @@
 			let answerKey = $("#answer-key");
 			let alternativesContainer = $("#alternatives-container");
 			let matchCodeField = $("#match-code-container > span");
+			
+			let scoreRatioDisplay = $("#score-ratio-display");
+			let scorePercentageDisplay = $("#score-percentage-display");
 
 			let markHovered = function(displayContainer, answerKey, on, index) {
 				if (on) {
@@ -112,6 +115,12 @@
 					});
 					if (matchedIndicies.length > 0) {
 						$(this).val("");
+						
+						let numerator = inventoryGuesser.getMatchedCount();
+						let denominator = inventoryGuesser.getItemsCount();
+						let percentage = (numerator/denominator)*100
+						scoreRatioDisplay.text(numerator + "/" + denominator);
+						scorePercentageDisplay.text(percentage.toFixed(2) + "%");
 					}
 				}
 			});
@@ -173,6 +182,8 @@
 					createAnswerKeyEntry(ItemsMetadata[e.item_id][NAME_PROP], itemVariant, i).appendTo(answerKey);
 				});
 				matchCodeField.text(inventoryGuesser.getMatchCode());
+				scoreRatioDisplay.text("0/" + inventoryGuesser.getItemsCount());
+				scorePercentageDisplay.text("0.00%");
 			}
 			
 			developerMatchesButton.click(function() {
@@ -238,6 +249,8 @@
 				<label for="guess">Guess</label>
 				<input id="guess" type="text" name="guess"></input>
 				<button id="give-up-button" type="button">Give up</button>
+				<span id="score-ratio-display"></span>
+				<span id="score-percentage-display"></span>
 			</div>
 			<div id="game-container">
 				<div id="display-container"></div>

@@ -58,6 +58,10 @@ body {
 	width: 100%;
 }
 
+#give-up-button {
+	margin-right: 0.75em;
+}
+
 img.correct {
 	border: 3px solid rgba(0,100,0,1);
 }

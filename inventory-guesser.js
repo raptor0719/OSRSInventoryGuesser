@@ -114,6 +114,20 @@ var InventoryGuesser = function(getItemNames, getItemIconFileName, swapForAltern
 		}
 		return true;
 	}
+	
+	this.getMatchedCount = function() {
+		let matchedCount = 0;
+		for (let i = 0; i < isMatched.length; i++) {
+			if (isMatched[i]) {
+				matchedCount += 1;
+			}
+		}
+		return matchedCount;
+	}
+	
+	this.getItemsCount = function() {
+		return inventory.length;
+	}
 
 	this.getCurrentInventory = function() {
 		return copyArray(inventory);
