@@ -219,7 +219,7 @@ Util.findAllAlternativeNames = function(iconFileName) {
 		});
 	});
 
-	return alternatives;
+	return alternatives.sort((a, b) => a.item_name.localeCompare(b.item_name));
 }
 
 const NAME_PROP = "name";
