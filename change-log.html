@@ -8,13 +8,69 @@
 				font-family: sans-serif;
 			}
 
+			h2 {
+				margin-bottom: 0.25em;
+			}
+
 			li > ul > li {
-				max-width: 40em;
-				margin-bottom: 0.5em;
+				max-width: 50em;
+				margin-bottom: 0.25em;
+			}
+
+			ul {
+				margin-top: 0.25em;
 			}
 		</style>
 	</head>
 	<body>
+		<div>
+			<h1>v2 -&gt; v3</h1>
+			<div>
+				<ul>
+					<li>
+						<h2>Major Changes</h2>
+						<ul>
+							<li>Display item qualifiers on answer key and alternatives in a muted grey to differentiate items with the same in-game name.</li>
+							<li>Link directly to the item page rather than to a search url on answer key and alternatives.</li>
+							<li>
+								Added the ability to specify a seed when starting a new game.
+								<ul>
+									<li>If no seed is specified, a random seed will be generated.</li>
+									<li>The seed used for the current game board is displayed below the game board with the game code.</li>
+									<li>Any valid unicode character (including extended character sets such as arabic, cyrillic, etc) should work. Randomized seeds will only use english alpha-numeric characters.</li>
+								</ul>
+							</li>
+							<li>Added dailies! The daily button can be used to start the game for the day.</li>
+							<li>Display a score ratio and percentage above the game board.</li>
+							<li>Various items related to Deadman mode and the Sailing beta have been removed from the item pool.</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Visual/Layout</h2>
+						<ul>
+							<li>Only display the alternatives scrollbar if the list overflows the container.</li>
+							<li>Recolor the alternatives scrollbar to better match the color scheme.</li>
+							<li>Sort alternatives alphabetically.</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Technical</h2>
+						<ul>
+							<li>A public github has been created for the project: <a href="https://github.com/raptor0719/OSRSInventoryGuesser">https://github.com/raptor0719/OSRSInventoryGuesser</a></li>
+							<li>
+								Leaps and bounds have been achieved in the various tooling to make the OSRS Wiki -&gt; Guesser pipeline much easier for myself.
+								Namely, the various python scripts have been cleaned/organized and the process has been formalized with a shell script to link it all together.
+							</li>
+							<li>Styling has been moved from embedded in the main page to a separate file.</li>
+							<li>
+								Automated icon matching is now using a perceptual hashing method in python, rather than exact file byte matching.
+								There is currently almost no 'fuzziness' built in, so some manual intervention is necessary on my part.
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
 		<div>
 			<h1>v1 -&gt; v2</h1>
 			<div>
