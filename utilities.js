@@ -18,13 +18,14 @@ Util.scaleNumberToRange = function(value, min, max) {
 	return Math.floor(value * (max - min + 1)) + min;
 }
 
+Util.MAX_SEED_VALUE = 4294967296;
 Util.randomNumberGenerator = function(seed) {
 	// Implemenation of Mulberry32
 	let prng = function() {
 		let t = seed += 0x6D2B79F5;
 		t = Math.imul(t ^ t >>> 15, t | 1);
 		t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-		return ((t ^ t >>> 14) >>> 0) / 4294967296;
+		return ((t ^ t >>> 14) >>> 0) / Util.MAX_SEED_VALUE;
 	}
 	
 	// Go past the first 20 iterations because
@@ -36,20 +37,22 @@ Util.randomNumberGenerator = function(seed) {
 	return prng;
 }
 
+Util.RANDOM_STRING_ALLOWED_CHARACTERS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 Util.calculateNumberFromString = function(str) {
-	 let total = 0;
-	 for (let i = 0; i < str.length; i++) {
-	 	total += str.codePointAt(i);
-	 }
-	 return total;
+	let concat = "";
+	for (let i = 0; i < str.length; i++) {
+		concat += Util.RANDOM_STRING_ALLOWED_CHARACTERS.indexOf(str.charAt(i));
+	}
+	let rawSeed = BigInt(concat);
+	let fixedSeed = rawSeed % BigInt(Util.MAX_SEED_VALUE);
+	return Number(fixedSeed);
 }
 
-Util.randomStringAllowedCharacters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 Util.generateRandomString = function(length) {
 	let g = "";
 	for (let i = 0; i < length; i++) {
-		let rand = Util.randomIntInRange(0, Util.randomStringAllowedCharacters.length);
-		g += Util.randomStringAllowedCharacters.charAt(rand);
+		let rand = Util.randomIntInRange(0, Util.RANDOM_STRING_ALLOWED_CHARACTERS.length);
+		g += Util.RANDOM_STRING_ALLOWED_CHARACTERS.charAt(rand);
 	}
 	return g;
 }
