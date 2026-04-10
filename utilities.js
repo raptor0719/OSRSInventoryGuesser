@@ -41,7 +41,7 @@ Util.RANDOM_STRING_ALLOWED_CHARACTERS = "0123456789abcdefghijklmnopqrstuvwxyzABC
 Util.calculateNumberFromString = function(str) {
 	let concat = "";
 	for (let i = 0; i < str.length; i++) {
-		concat += Util.RANDOM_STRING_ALLOWED_CHARACTERS.indexOf(str.charAt(i));
+		concat += str.codePointAt(i);
 	}
 	let rawSeed = BigInt(concat);
 	let fixedSeed = rawSeed % BigInt(Util.MAX_SEED_VALUE);
