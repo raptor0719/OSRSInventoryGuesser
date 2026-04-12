@@ -1,5 +1,98 @@
 var Util = Util || {};
 
+Util.Timer = function(timeSeconds, onSecondCallback) {
+	var currentTimeSeconds = timeSeconds;
+	var interval = null;
+
+	this.start = function() {
+		if (currentTimeSeconds <= 0) {
+			return;
+		}
+
+		interval = setInterval(function() {
+			currentTimeSeconds -= 1;
+			onSecondCallback(currentTimeSeconds);
+			if (currentTimeSeconds <= 0) {
+				clearInterval(interval);
+				interval = null;
+			}
+		}, 1000);
+	}
+
+	this.stop = function() {
+		clearInterval(interval);
+		interval = null;
+	}
+
+	this.getTime = function() {
+		return currentTimeSeconds;
+	}
+}
+
+Util.Stopwatch = function(onSecondCallback) {
+	var currentTimeSeconds = 0;
+	var interval = null;
+
+	this.start = function() {
+		interval = setInterval(function() {
+			currentTimeSeconds += 1;
+			onSecondCallback(currentTimeSeconds);
+		}, 1000);
+	}
+
+	this.stop = function() {
+		clearInterval(interval);
+		interval = null;
+	}
+
+	this.getTime = function() {
+		return currentTimeSeconds;
+	}
+}
+
+Util.parseTimeStringToSeconds = function(timeString) {
+	let pattern = /^([0-9]+:){0,2}[0-9]+$/;
+	
+	if (!pattern.test(timeString)) {
+		console.log("Invalid time string '" + timeString + "'");
+		return 0;
+	}
+	
+	let split = timeString.split(":");
+	
+	let totalSeconds = 0;
+	if (split.length >= 3) {
+		let hours = parseInt(split[0]);
+		totalSeconds += hours * 60 * 60;
+	}
+	if (split.length >= 2) {
+		let minutesIndex = split.length - 2;
+		let minutes = parseInt(split[minutesIndex]);
+		totalSeconds += minutes * 60;
+	}
+	let secondsIndex = split.length - 1;
+	let seconds = parseInt(split[secondsIndex]);
+	totalSeconds += seconds;
+	
+	return totalSeconds;
+}
+
+Util.formatSecondsToTimeString = function(seconds) {
+	let secondsLeft = seconds;
+	
+	let hours = Math.floor(secondsLeft/(60*60));
+	secondsLeft = secondsLeft % (60 * 60);
+	
+	let minutes = Math.floor(secondsLeft/60);
+	secondsLeft = secondsLeft % 60;
+	
+	let hoursString = (hours > 0) ? String(hours) + ':' : "";
+	let minutesString = String(minutes).padStart((hours.length > 0) ? 2 : 0, '0') + ':';
+	let secondsString = String(secondsLeft).padStart(2, '0');
+	
+	return hoursString + minutesString + secondsString;
+}
+
 /*
 * Gives a random integer value from min (inclusive) to max (inclusive)
 */

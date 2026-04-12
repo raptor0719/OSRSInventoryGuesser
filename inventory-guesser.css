@@ -66,6 +66,14 @@ body {
 	margin-right: 0.75em;
 }
 
+#timer-display {
+	margin-left: 0.15em;
+}
+
+#score-ratio-display {
+	margin-left: 5.7em;
+}
+
 img.correct {
 	border: 3px solid rgba(0,100,0,1);
 }
@@ -198,3 +206,10 @@ img {
 	display: inline-block;
 }
 
+.timer-low {
+	color: yellow;
+}
+
+.timer-very-low {
+	color: red;
+}

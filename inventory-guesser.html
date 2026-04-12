@@ -19,6 +19,8 @@
 			
 			let scoreRatioDisplay = $("#score-ratio-display");
 			let scorePercentageDisplay = $("#score-percentage-display");
+			
+			let timerDisplay = $("#timer-display");
 
 			let markHovered = function(displayContainer, answerKey, on, index) {
 				if (on) {
@@ -98,6 +100,7 @@
 			}
 
 			var inventoryGuesser = new InventoryGuesser(getItemNames, getItemIconFileName, swapForAlternative.bind(null, answerKey), ItemsMetadata);
+			var currentTiming = null;
 
 			$("#guess").on("input", function() {
 				if (!inventoryGuesser.allHasMatched()) {
@@ -126,7 +129,7 @@
 				}
 			});
 
-			$("#give-up-button").click(function() {
+			let giveUpButton = $("#give-up-button").click(function() {
 				let unmatchedIndices = inventoryGuesser.endGame();
 				let displayedIcons = displayContainer.children();
 				let answerText = answerKey.children();
@@ -135,6 +138,10 @@
 						$(displayedIcons[i]).addClass("not-guessed");
 						$(answerText[i]).addClass("not-guessed");
 				});
+				
+				if (currentTiming !== null) {
+					currentTiming.stop();
+				}
 			});
 
 			let matchFactorInput = $("#match-factor");
@@ -145,12 +152,50 @@
 			let prngSeedInput = $("#prng-seed-field");
 			let matchCodeInput = $("#match-code-field");
 			let useCustomSettings = $("#use-custom-settings");
+			let timerInput = $("#timer-field");
+			let enableTimerInput = $("#enable-timer");
+			
+			let updateTimerDisplay = function(secondsRemaining) {
+				let formattedTime = Util.formatSecondsToTimeString(secondsRemaining);
+				timerDisplay.text(formattedTime);
+			}
+			let timerLowClass = "timer-low";
+			let timerVeryLowClass = "timer-very-low";
+			let timerCallback = function(startSeconds, secondsRemaining) {
+				updateTimerDisplay(secondsRemaining);
+				
+				timerDisplay.removeClass(timerLowClass + " " + timerVeryLowClass);
+				if (secondsRemaining <= 10) {
+					timerDisplay.addClass(timerVeryLowClass);
+				} else if (secondsRemaining <= 30) {
+					timerDisplay.addClass(timerLowClass);
+				}
+				
+				if (secondsRemaining <= 0) {
+					giveUpButton.click();
+				}
+			}
+			let createTimerSettings = function(seconds, enabled) {
+				return {"seconds": seconds, "enabled": enabled};
+			}
 
 			matchFactorInput.on("input", function() {
 				$("#match-factor-val").text($(this).val());
 			}).trigger("input");
 			
-			let startNewGame = function(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, predefinedItems) {
+			let createTiming = function(timerSettings) {
+				if (timerSettings.enabled) {
+					return new Util.Timer(timerSettings.seconds, timerCallback.bind(null, timerSettings.seconds));
+				} else {
+					return new Util.Stopwatch(updateTimerDisplay);
+				}
+			}
+			
+			let startNewGame = function(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, timerSettings, predefinedItems) {
+				if (currentTiming !== null) {
+					currentTiming.stop();
+				}
+				
 				console.log("Starting new game with properties:\nmatchFactor = " + matchFactor + "\nnumber of items = " + numberOfItems + "\nallow alternatives = " + allowAlternatives + "\nallow duplicates = " + allowDuplicates + "\nallow multi-match = " + allowMultiMatch + "\npredefined items = " + predefinedItems.length);
 				
 				// Set settings to reflect the current match
@@ -166,6 +211,13 @@
 				let prngSeedValue = (prngSeed.length > 0) ? Util.calculateNumberFromString(prngSeed) : (Math.random()*2**32)>>>0;
 				let prng = Util.randomNumberGenerator(prngSeedValue);
 				let stringMatcher = new StringFuzzyMatcher(matchFactor);
+				
+				// Create the timer or stopwatch, and update visuals
+				timerDisplay.removeClass(timerLowClass + " " + timerVeryLowClass);
+				currentTiming = createTiming(timerSettings);
+				timerInput.val(Util.formatSecondsToTimeString(timerSettings.seconds));
+				timerDisplay.text(Util.formatSecondsToTimeString(currentTiming.getTime()));
+				enableTimerInput.prop("checked", timerSettings.enabled);
 
 				let items = inventoryGuesser.newGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prng, stringMatcher, predefinedItems);
 
@@ -192,6 +244,8 @@
 				matchCodeField.text(inventoryGuesser.getMatchCode());
 				scoreRatioDisplay.text("0/" + inventoryGuesser.getItemsCount());
 				scorePercentageDisplay.text("0.00%");
+				
+				currentTiming.start();
 			}
 			
 			developerMatchesButton.click(function() {
@@ -208,7 +262,7 @@
 					let prngSeed = matchName;
 					let predefinedItems = matchData["item_variants"];
 					
-					startNewGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, predefinedItems);
+					startNewGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, createTimerSettings(0, false), predefinedItems);
 				}
 			});
 
@@ -218,6 +272,8 @@
 				
 				let prngSeedInputValue = prngSeedInput.val().trim();
 				let prngSeedString = (prngSeedInputValue.length > 0) ? prngSeedInputValue : Util.generateRandomString(20);
+				
+				let parsedTimeValue = Util.parseTimeStringToSeconds(timerInput.val());
 
 				let matchFactor = (fromMatchCode) ? matchCodeData["match_factor"] : matchFactorInput.val()/100;
 				let numberOfItems = (matchCodeData !== null) ? matchCodeData["item_variants"].length : numberOfItemsInput.val();
@@ -225,15 +281,17 @@
 				let allowDuplicates = (fromMatchCode) ? matchCodeData["allow_repeats"] : allowDuplicatesInput.prop("checked");
 				let allowMultiMatch = (fromMatchCode) ? matchCodeData["allow_multimatch"] : allowMultiMatchInput.prop("checked");
 				let prngSeed = (fromMatchCode) ? "" : prngSeedString;
+				let timerValue = (parsedTimeValue <= 0) ? 0 : parsedTimeValue;
+				let enableTimer = (timerValue <= 0) ? false : enableTimerInput.prop("checked");
 				let predefinedItems = (matchCodeData !== null) ? matchCodeData["item_variants"] : [];
 				
-				startNewGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, predefinedItems);
-			}).click();
+				startNewGame(numberOfItems, allowAlternatives, allowDuplicates, allowMultiMatch, prngSeed, matchFactor, createTimerSettings(timerValue, enableTimer), predefinedItems);
+			});
 			
 			$("#daily-game-button").click(function() {
 				let prngSeed = new Date().toISOString().slice(0, 10);
 				
-				startNewGame(28, true, false, false, prngSeed, 0.8, []);
+				startNewGame(28, true, false, false, prngSeed, 0.8, createTimerSettings(0, false), []);
 			});
 		});
 		</script>
@@ -258,6 +316,10 @@
 				<input id="match-code-field" name="match-code-field" type="text"></input>
 				<label for="use-custom-settings">Use Custom Settings with Game Code</label>
 				<input id="use-custom-settings" name="use-custom-settings" type="checkbox"></input>
+				<label for="timer-field">Timer</label>
+				<input id="timer-field" name="timer-field" type="text" value="2:00"></input>
+				<label for="enable-timer">Enable Timer</label>
+				<input id="enable-timer" name="enable-timer" type="checkbox"></input>
 				<button id="new-game-button" name="new-game-button" type="button">New Game</button>
 				<button id="daily-game-button" name="daily-game-button" type="button">Daily</button>
 			</div>
@@ -271,6 +333,7 @@
 				<label for="guess">Guess</label>
 				<input id="guess" type="text" name="guess"></input>
 				<button id="give-up-button" type="button">Give up</button>
+				<span id="timer-display"></span>
 				<span id="score-ratio-display"></span>
 				<span id="score-percentage-display"></span>
 			</div>
